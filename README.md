@@ -1,3 +1,11 @@
+<!--
+ * @Author: zym
+ * @Date: 2021-12-18 11:16:20
+ * @LastEditors: zym
+ * @LastEditTime: 2021-12-20 04:00:50
+ * @Description: 
+ * @FilePath: \Destiny2 Dawning Oven\README.md
+-->
 
 # Destiny 2 Automatic Dawning Oven
 还在手动接任务刷光尘？我来教你挂机！
@@ -7,6 +15,38 @@
 这是一个基于[OpenCV-Python](https://docs.opencv.org/4.x/d6/d00/tutorial_py_root.html)和[PaddleOCR](https://www.paddlepaddle.org.cn/hub/scene/ocr)的全自动接悬赏、做饼干、领取悬赏奖励的脚本。
 
 # 准备工作
+## 安装Microsoft Visual C++ 14.0
+没有Microsoft Visual C++ 14.0就无法安装后面的`paddleocr`。
+
+我们要安装的包其实是[Microsoft Visual C++ Build Tools](http://go.microsoft.com/fwlink/?LinkId=691126)，这个库很多游戏或者工具经常用得上的，所以不要觉得麻烦啦。
+
+因为微软的软件管理十分混乱，经常404（例如这个就是）或者找不到链接，但又不得不用，为了方便安装所以这里选择第三方包管理工具[Chocolatey](https://chocolatey.org/install)。
+
+直接打开，然后可以看到默认的安装方式就是使用`powershell`安装。
+
+首先在开始菜单中找到`powershell`使用**管理员权限**运行。
+
+<img src="./docs/img6.png" width=50%>
+
+
+然后复制下面这个框框里面的这段命令：
+
+<img src="./docs/img7.png" width=50%>
+
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+到`powershell`里执行：
+
+<img src="./docs/img8.png" width=50%>
+
+然后再输入：
+
+    choco install visualstudio2017-workload-vctools
+
+就可以正常安装了，遇到询问，直接输`all`即可。
+
+<img src="./docs/img9.png" width=50%>
+
 ## 安装Python
 首先去[Python官网](https://www.python.org/downloads/)下载python并安装。
 
@@ -17,7 +57,6 @@
 安装完后，打开一个`cmd`，键入`py`，有输出即表示安装成功。
 
 <img src="./docs/img2.png" width=50%>
-
 
 ## 安装Shapely
 打开官网[Shapely](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)
@@ -36,10 +75,24 @@
 
 安装完毕后，终端不要关，还有东西需要安装。
 
+## 修改pip源
+
+修改`pip`的源为`阿里云源`输入：
+
+    py -m pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+
+然后更新`pip`
+
+    py -m pip install --upgrade pip
+
 ## 安装PaddleOCR
 等Shapely安装完后，再输入：
 
     py -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple 
+
+等待安装完毕，再输入：
+
+    py -m pip install "paddleocr>=2.0.1"
     
 等待安装即可。
 
