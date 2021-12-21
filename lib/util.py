@@ -1,4 +1,5 @@
 
+
 from PIL import ImageGrab
 import numpy as np
 import cv2 as cv
@@ -58,7 +59,6 @@ def moveClick(po,  width=60, height=60, type="click",):
         pg.mouseUp()
     elif type == 'rightclick':
         pg.rightClick()
-
 # 保存图片
 
 
@@ -73,12 +73,19 @@ def getOCR():
     result = ocr.ocr(getScreen(), cls=True)
     return result
 
+
+def compareOCR(text):
+    for line in getOCR():
+        if line[1][0].find(text) != -1:
+            return True
+    return False
+
 # 判断屏幕文字返回匹配目标
 
 
-def compareOCR(result):
+def compareOCRGetCookies():
     r = ''
-    for line in result:
+    for line in getOCR():
         for cookie in cookies:
             if line[1][0].find(cookie) != -1:
                 r = cookie

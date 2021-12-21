@@ -2,7 +2,7 @@
 import time
 
 from cv2 import repeat
-from lib.util import getScreen, moveClick, compareMultipleImg, compareImg, saveImg, getOCR, compareOCR, getWindowName
+from lib.util import getScreen, moveClick, compareMultipleImg, compareImg, compareOCRGetCookies, compareOCR, getWindowName
 import pyautogui as pg
 from lib.cookies import cookies
 import keyboard
@@ -23,7 +23,7 @@ haveTasks = False  # 已经打开NPC面板
 
 getName = False  # 已经获取到要做的饼干名称
 
-start = False
+run = False  # 线程执行
 
 taskCookies = []  # 已接悬赏要做的饼干们
 
@@ -62,9 +62,11 @@ def getCookiesName():
     if coordinates == 0:
         return 0
     for co in coordinates:
+        if run == False:
+            return 0
         pg.moveTo(co)
         time.sleep(0.5)
-        r = compareOCR(getOCR())
+        r = compareOCRGetCookies()
         if r != '':
             cookiesName.append(r)
             getName = True
@@ -91,6 +93,8 @@ def makeCookies():
     taskBtn = compareImg('./img/taskBtn.png')
     if (framePanel == True) & (nextBtn != 0) & (taskBtn == 0):
         for inx, img in enumerate(cookiesImg):
+            if run == False:
+                return 0
             preBtn = compareImg('./img/preBtn.png')
             if preBtn == 0:
                 return 0
@@ -105,7 +109,7 @@ def makeCookies():
             if cook != 0:
                 pg.moveTo([cook[0][0] + cook[1] / 2, cook[0][1] + cook[2] / 2])
                 repeat = True
-                while(repeat):
+                while(repeat & run):
                     if single == '':
                         repeat = False
                     pg.mouseDown()
@@ -139,21 +143,28 @@ def getTasks():
     npc = compareImg('./img/npc.png')
     limit = compareImg('./img/limit.png')
     gift = compareImg('./img/gift.png')
+    evaGift = compareImg('./img/evaGift.png')
 
     if npc == 0:
         pg.press('esc')
         time.sleep(1)
         return 0
-    elif gift != 0:  # 有礼物要送
-        while(gift != 0):
-            moveClick(gift[0], gift[1], gift[2])
-            gift = compareImg('./img/gift.png')
+    elif (gift != 0) | (evaGift != 0):  # 有礼物要送
+        hasgift = True
+        while(hasgift & run):
+            if gift != 0:
+                moveClick(gift[0], gift[1], gift[2])
+            else:
+                pg.click()
+            evaGift = compareImg('./img/evaGift.png')
+            if evaGift == 0:
+                hasgift = False
             time.sleep(0.5)
         return 0
     elif limit == 0:
         task = compareImg('./img/task.png')
         if task != 0:
-            while(limit == 0):
+            while((limit == 0) & run):
                 moveClick(task[0], task[1], task[2])
                 limit = compareImg('./img/limit.png')
                 time.sleep(0.5)
@@ -206,6 +217,8 @@ def closePanel():
 def findCookieImg(cookieName):
     r = ''
     for co in cookies:
+        if run == False:
+            return 0
         if co == cookieName:
             r = cookies[co]
     return r
@@ -216,30 +229,29 @@ def getRewards():
     time.sleep(1)
     pg.moveTo(1000, 10)
     coordinates = compareMultipleImg('./img/rewards.png')
-    while(coordinates != 0):
+    while((coordinates != 0) & run):
         moveClick(coordinates[0])
+        pg.moveTo([coordinates[0][0], coordinates[0][1] - 200])
         coordinates = compareMultipleImg('./img/rewards.png')
-        if coordinates != 0:
-            pg.moveTo([coordinates[0][0], coordinates[0][1] - 200])
         time.sleep(1)
 
 
 def stop(key):
-    global start
+    global run
     global repeat
 
     if (key.name == 'f4') & (key.event_type == 'down'):
-        start = False
+        run = False
         repeat = False
         print('stop')
 
 
 keyboard.wait('f3')
-start = True
+run = True
 print('start')
 keyboard.hook(stop)
 
-while(start):
+while(run):
     if getWindowName() != 'Destiny 2':  # 开始后如果焦点窗口不是游戏，则退出
         pg.press('f4')
         break
@@ -252,6 +264,8 @@ while(start):
                 continue
             print(taskCookies)
             for co in taskCookies:
+                if run == False:
+                    break
                 cookiesImg.append(findCookieImg(co))
         elif getName == True:
             makeCookies()
