@@ -19,7 +19,7 @@ cookiePanel = False  # 已经进入烤炉
 
 upperLimit = False  # 悬赏已经上限
 
-npcPanel = False  # 已经打开NPC面板
+haveTasks = False  # 已经打开NPC面板
 
 getName = False  # 已经获取到要做的饼干名称
 
@@ -134,14 +134,21 @@ def makeCookies():
 
 def getTasks():
     global upperLimit
-    global npcPanel
+    global haveTasks
 
     npc = compareImg('./img/npc.png')
     limit = compareImg('./img/limit.png')
+    gift = compareImg('./img/gift.png')
 
     if npc == 0:
         pg.press('esc')
         time.sleep(1)
+        return 0
+    elif gift != 0:  # 有礼物要送
+        while(gift != 0):
+            moveClick(gift[0], gift[1], gift[2])
+            gift = compareImg('./img/gift.png')
+            time.sleep(0.5)
         return 0
     elif limit == 0:
         task = compareImg('./img/task.png')
@@ -150,9 +157,8 @@ def getTasks():
                 moveClick(task[0], task[1], task[2])
                 limit = compareImg('./img/limit.png')
                 time.sleep(0.5)
-
     else:
-        npcPanel = True
+        haveTasks = True
         upperLimit = True
 
 
@@ -180,7 +186,7 @@ def closePanel():
     global cookiePanel
     global upperLimit
     global getName
-    global npcPanel
+    global haveTasks
     global taskCookies
     global cookiesImg
     global taskCoordinates
@@ -191,7 +197,7 @@ def closePanel():
     cookiePanel = False
     upperLimit = False
     getName = False
-    npcPanel = False
+    haveTasks = False
     taskCookies = []
     cookiesImg = []
     taskCoordinates = []
@@ -238,7 +244,7 @@ while(start):
         pg.press('f4')
         break
     if single == '':
-        if npcPanel == False:
+        if haveTasks == False:
             getTasks()
         elif (upperLimit == True) & (getName == False):
             taskCookies = getCookiesName()
