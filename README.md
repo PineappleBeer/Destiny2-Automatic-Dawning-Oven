@@ -2,7 +2,7 @@
  * @Author: zym
  * @Date: 2021-12-18 11:16:20
  * @LastEditors: zym
- * @LastEditTime: 2021-12-20 04:00:50
+ * @LastEditTime: 2021-12-21 10:17:56
  * @Description: 
  * @FilePath: \Destiny2 Dawning Oven\README.md
 -->
@@ -119,8 +119,10 @@
 * 曙光节NPC处接的光尘悬赏图标----task.png
 * 曙光节光尘悬赏完成图标----rewards.png
 * 进入烤炉第一行第一个框----frameBtn.png
-* 进入烤炉选择饼干上一页----preBtn.png
+* 进入烤炉选择饼干上一页按钮----preBtn.png
 * 进入烤炉选择饼干下一页按钮----nextBtn.png
+* 给曙光节NPC送饼干时礼物图标----gift.png
+* 给曙光节NPC送饼干鼠标悬停礼物上时饼干的名称----evaGift.png
 
 ## 游戏按键设置
 在游戏的键盘设置里，拉到最下面，将打开任务的按键设置为`f2`。
