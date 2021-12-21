@@ -5,6 +5,7 @@ import cv2 as cv
 import pyautogui as pg
 from paddleocr import PaddleOCR
 from lib.cookies import cookies
+import win32gui as w
 
 # 抓取屏幕
 
@@ -82,3 +83,9 @@ def compareOCR(result):
             if line[1][0].find(cookie) != -1:
                 r = cookie
     return r
+
+# 获取当前焦点窗口
+
+
+def getWindowName():
+    return w.GetWindowText(w.GetForegroundWindow())

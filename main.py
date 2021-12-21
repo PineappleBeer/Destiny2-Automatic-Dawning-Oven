@@ -2,7 +2,7 @@
 import time
 
 from cv2 import repeat
-from lib.util import getScreen, moveClick, compareMultipleImg, compareImg, saveImg, getOCR, compareOCR
+from lib.util import getScreen, moveClick, compareMultipleImg, compareImg, saveImg, getOCR, compareOCR, getWindowName
 import pyautogui as pg
 from lib.cookies import cookies
 import keyboard
@@ -226,7 +226,6 @@ def stop(key):
         start = False
         repeat = False
         print('stop')
-        exit()
 
 
 keyboard.wait('f3')
@@ -235,6 +234,9 @@ print('start')
 keyboard.hook(stop)
 
 while(start):
+    if getWindowName() != 'Destiny 2':  # 开始后如果焦点窗口不是游戏，则退出
+        pg.press('f4')
+        break
     if single == '':
         if npcPanel == False:
             getTasks()
