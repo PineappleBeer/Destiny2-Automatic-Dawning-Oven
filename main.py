@@ -144,6 +144,7 @@ def getTasks():
     limit = compareImg('./img/limit.png')
     gift = compareImg('./img/gift.png')
     evaGift = compareImg('./img/evaGift.png')
+    accept = compareImg('./img/accept.png')
 
     if npc == 0:
         pg.press('esc')
@@ -160,6 +161,9 @@ def getTasks():
             if evaGift == 0:
                 hasgift = False
             time.sleep(0.5)
+        return 0
+    elif accept != 0:
+        pg.press('enter')
         return 0
     elif limit == 0:
         task = compareImg('./img/task.png')
