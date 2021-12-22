@@ -236,8 +236,8 @@ def getRewards():
     while((coordinates != 0) & run):
         moveClick(coordinates[0])
         pg.moveTo([coordinates[0][0], coordinates[0][1] - 200])
-        coordinates = compareMultipleImg('./img/rewards.png')
         time.sleep(1)
+        coordinates = compareMultipleImg('./img/rewards.png')
 
 
 def stop(key):
